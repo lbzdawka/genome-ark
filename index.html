@@ -1,0 +1,74 @@
+---
+layout: default
+title: Species collection
+---
+
+<main>
+  <header class="page-header">
+    <h1>Species collection</h1>
+    <p>Wybrane gatunki z kolekcji GenomeArk</p>
+  </header>
+
+  <section class="table-wrapper" aria-labelledby="species-table-heading">
+    <h2 id="species-table-heading" class="visually-hidden">Tabela gatunków</h2>
+
+    <table class="species-table">
+      <thead>
+        <tr>
+          <th>Zdjęcie</th>
+          <th>Gatunek</th>
+          <th>Rodzina</th>
+          <th>Rząd</th>
+          <th>Liczba zasobów</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in site.species %}
+          {% assign has_bionano = false %}
+          {% for sample in item.samples %}
+            {% if sample.datatype contains "Bionano" %}
+              {% assign has_bionano = true %}
+            {% endif %}
+          {% endfor %}
+
+          <tr class="species-row">
+            <td class="species-photo-cell">
+              <div class="thumb-wrap">
+                {% if has_bionano %}
+                  <span class="bionano-badge">Bionano</span>
+                {% endif %}
+
+                <a href="{{ item.url | relative_url }}">
+                  <img
+                    class="species-image"
+                    src="{{ item.image | relative_url }}"
+                    alt="{{ item.common_name }}"
+                  >
+                </a>
+              </div>
+
+              <p class="image-attribution">{{ item.image_attribution }}</p>
+            </td>
+
+            <td>
+              <a class="species-name-link" href="{{ item.url | relative_url }}">
+                {{ item.common_name }}
+              </a>
+              <div class="latin-name">
+                <em>{{ item.name }}</em>
+              </div>
+            </td>
+
+            <td>{{ item.family.name }}</td>
+            <td>{{ item.order.name }}</td>
+            <td>{{ item.samples | size }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</main>
+
+<footer class="site-footer">
+  autor: Lena Bzdawka
+</footer>

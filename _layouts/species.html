@@ -1,0 +1,124 @@
+---
+layout: default
+---
+
+{% assign resource_count = page.samples | size %}
+
+<div class="social-bar" aria-label="Linki społecznościowe">
+  <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
+    <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+  </a>
+  <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
+    <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+  </a>
+  <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+    <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+  </a>
+</div>
+
+<header class="site-header">
+  <a class="back-link" href="{{ '/' | relative_url }}">← Powrót do listy gatunków</a>
+</header>
+
+<main class="species-page">
+  <aside class="toc">
+    <nav aria-label="Spis treści">
+      <h2>Spis treści</h2>
+      <ul>
+        <li><a href="#taxonomy">Taksonomia</a></li>
+        <li><a href="#resources">Zasoby sekwencjonowania</a></li>
+        <li><a href="#about">Informacje o gatunku</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <article class="species-content">
+    <header class="species-hero">
+      <div class="species-heading">
+        <p class="eyebrow">{{ page.common_name }}</p>
+        <h1>{{ page.name }}</h1>
+        <p class="hero-meta">
+          Rodzina: {{ page.family.name }} · Rząd: {{ page.order.name }} · Zasoby: {{ resource_count }}
+        </p>
+      </div>
+
+      <figure class="species-figure">
+        <img src="{{ page.image | relative_url }}" alt="{{ page.common_name }}">
+        <figcaption>{{ page.image_attribution }}</figcaption>
+      </figure>
+    </header>
+
+    <section id="taxonomy">
+      <h2 class="fancy-heading">Taksonomia</h2>
+      <dl class="taxonomy-list">
+        <div>
+          <dt>Nazwa angielska</dt>
+          <dd>{{ page.common_name }}</dd>
+        </div>
+        <div>
+          <dt>Nazwa łacińska</dt>
+          <dd><em>{{ page.name }}</em></dd>
+        </div>
+        <div>
+          <dt>Rodzina</dt>
+          <dd>{{ page.family.name }}</dd>
+        </div>
+        <div>
+          <dt>Rząd</dt>
+          <dd>{{ page.order.name }}</dd>
+        </div>
+        <div>
+          <dt>Taxon ID</dt>
+          <dd>{{ page.taxon_id }}</dd>
+        </div>
+        <div>
+          <dt>Projekt</dt>
+          <dd>{{ page.project | join: ", " }}</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section id="resources">
+      <h2 class="fancy-heading">Zsekwencjonowane zasoby</h2>
+      <table class="resources-table">
+        <thead>
+          <tr>
+            <th>Technologia</th>
+            <th>Osobnik</th>
+            <th>Bases</th>
+            <th>Coverage</th>
+            <th>Bytes</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for sample in page.samples %}
+          <tr>
+            <td>{{ sample.datatype }}</td>
+            <td>{{ sample.individual }}</td>
+            <td>{{ sample.bases }}</td>
+            <td>{{ sample.coverage }}</td>
+            <td>{{ sample.bytes }}</td>
+            <td>
+              <a href="{{ sample.url }}" target="_blank" rel="noreferrer" aria-label="Otwórz zasób">
+                <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section id="about">
+  <h2 class="fancy-heading">Informacje o gatunku</h2>
+  <div class="markdown-content">
+    {% if page.description_markdown %}
+      {{ page.description_markdown | markdownify }}
+    {% else %}
+      {{ content }}
+    {% endif %}
+  </div>
+</section>
+  </article>
+</main>
